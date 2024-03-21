@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { Register } from './auth.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtStrategy } from './auth.strategy';
+import * as admins from '../../seeds/adminSeed.json';
 
 @Module({
   imports: [
@@ -23,4 +24,19 @@ import { JwtStrategy } from './auth.strategy';
   providers: [AuthService, JwtStrategy],
 })
 
-export class AuthModule {}
+export class AuthModule implements OnModuleInit{
+  async onModuleInit(){
+    const checkAdminSeed = await Register.findOne({
+      where: {
+        login: 'admin'
+      }
+    });
+    if(!checkAdminSeed) {
+      const adminsArray = admins.admins;
+      for(let i = 0; i < adminsArray.length; i++) {
+        adminsArray[i].password = await Register.generatePasswordHash(adminsArray[i].password);
+        await Register.insert(adminsArray[i]);
+      }
+    }
+  }
+}
