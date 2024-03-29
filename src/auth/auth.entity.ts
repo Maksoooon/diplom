@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+
 import { Contract } from 'src/contract/contract.entity';
 import { Feed } from 'src/feed/feed.entity';
 

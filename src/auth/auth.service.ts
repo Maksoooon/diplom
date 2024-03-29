@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Register } from './auth.entity';
 import { JwtService } from '@nestjs/jwt';
+
+import { Register } from './auth.entity';
 import { RegisterDto } from 'src/dto/auth.dto';
 
 @Injectable()

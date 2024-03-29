@@ -1,6 +1,5 @@
 import { Register } from "src/auth/auth.entity";
-import { Tariff } from "src/tariff/tariff.entity";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column, OneToOne, JoinColumn } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, Column } from "typeorm";
 
 @Entity()
 export class Feed extends BaseEntity {

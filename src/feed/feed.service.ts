@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Feed } from "./feed.entity";
-import { Register } from "src/auth/auth.entity";
 
 @Injectable()
 export class FeedService {

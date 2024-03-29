@@ -1,7 +1,9 @@
 import { Register } from "src/auth/auth.entity";
 import { Tariff } from "src/tariff/tariff.entity";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToOne, Column, OneToOne, JoinColumn } from "typeorm";
 import { ContractData } from "./contract.data.entity";
+import {
+    BaseEntity, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToOne, Column, OneToOne, JoinColumn
+} from "typeorm";
 
 @Entity()
 export class Contract extends BaseEntity {

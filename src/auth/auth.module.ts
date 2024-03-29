@@ -1,11 +1,13 @@
 import { Module, OnModuleInit } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Register } from './auth.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtStrategy } from './auth.strategy';
+
 import * as admins from '../../seeds/adminSeed.json';
 
 @Module({

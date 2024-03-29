@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Contract } from './contract.entity';
 import { JwtService } from '@nestjs/jwt';
-import { CreateContractDto, UpdateContractDto } from 'src/dto/contract.dto';
 import { ContractData } from './contract.data.entity';
 
 @Injectable()

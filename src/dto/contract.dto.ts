@@ -1,5 +1,3 @@
-import { Express } from 'express';
-
 export class CreateLawContractData {
     email: string;
     orgAddress: string;
