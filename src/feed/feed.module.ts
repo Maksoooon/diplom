@@ -5,6 +5,7 @@ import { Feed } from './feed.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 
+
 @Module({
   imports: [TypeOrmModule.forFeature([Feed])],
   controllers: [FeedController],

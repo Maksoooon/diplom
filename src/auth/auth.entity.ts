@@ -44,7 +44,7 @@ export class Register extends BaseEntity {
         .getOne();
     }
 
-    static generatePasswordHash(password) {
+    static generatePasswordHash(password: string) {
         const salt = bcrypt.genSaltSync(10);
         return bcrypt.hashSync(password, salt);
     }
@@ -53,12 +53,12 @@ export class Register extends BaseEntity {
         const user = await this.createQueryBuilder("user")
         .where("user.login = :login", {login})
         .getOne();
+        
+        if (!user) return false;
 
         const isPasswordValid = await this.checkPassword(password, user.password || null);
 
-        if(!user || !isPasswordValid) {
-            return false;
-        }
+        if(!isPasswordValid) return false;
 
         return user;
     }

@@ -10,8 +10,11 @@ export class ContractService {
   async createContract(contract, token: string, files) {
     const payload = this.jwtService.decode(token.slice(7));
     const contractBody = new Contract();
-
     contractBody.userId = payload.id;
+    if(contract.type === 'person') {
+      const user = await Contract.getUserById(payload.id);
+      contractBody.fullName = user.fullName;
+    }
     contractBody.tariffId = contract.tariffId || null;
 
     const newData = new ContractData();
@@ -58,8 +61,15 @@ export class ContractService {
 
   async getContract() {
     const contracts = await Contract.find({
-      relations: ["data"]
+      relations: ["data", "userId", "tariffId"], // TODO возвращается один и тот же юзер (который делает запрос)
     })
+
+    contracts.forEach((contract) => {
+      delete contract.userId.login;
+      delete contract.userId.password;
+      delete contract.userId.isAdmin;
+    });
+
     return contracts;
   }
 }

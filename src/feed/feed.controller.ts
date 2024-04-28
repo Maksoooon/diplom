@@ -22,3 +22,4 @@ export class FeedController {
     return this.feedService.updateStatus(req.headers.authorization);
   }
 }
+

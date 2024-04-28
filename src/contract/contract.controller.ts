@@ -32,7 +32,7 @@ export class ContractController {
   updateContract(@Body() body: UpdateContractDto) {
     return this.contractService.updateContract(body);
   }
-
+  
   @Get('all')
   getContract() {
     return this.contractService.getContract();
