@@ -1,7 +1,7 @@
 export class CreateLawContractData {
     email: string;
-    orgAddress: string;
     orgName: string;
+    orgAddress?: string;
     orgToUser?: string;
     price?: number;
     regNumber?: string;

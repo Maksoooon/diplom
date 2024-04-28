@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Contract } from './contract.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ContractData } from './contract.data.entity';
+import { Register } from 'src/auth/auth.entity';
 
 @Injectable()
 export class ContractService {
@@ -12,7 +13,7 @@ export class ContractService {
     const contractBody = new Contract();
     contractBody.userId = payload.id;
     if(contract.type === 'person') {
-      const user = await Contract.getUserById(payload.id);
+      const user = await Register.getUserById(payload.id);
       contractBody.fullName = user.fullName;
     }
     contractBody.tariffId = contract.tariffId || null;

@@ -34,10 +34,4 @@ export class Contract extends BaseEntity {
 
     @Column("text", {nullable: true, array: true, default: null})
     passportScan?: string[];
-
-    static async getUserById(userId) {
-        return this.createQueryBuilder("user")
-        .where("user.userId = :userId", { userId })
-        .getOne();
-    }
 }

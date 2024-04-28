@@ -44,6 +44,12 @@ export class Register extends BaseEntity {
         .getOne();
     }
 
+    static async getUserById(userId) {
+        return this.createQueryBuilder("user")
+        .where("user.userId = :userId", { userId })
+        .getOne();
+    }
+
     static generatePasswordHash(password: string) {
         const salt = bcrypt.genSaltSync(10);
         return bcrypt.hashSync(password, salt);
