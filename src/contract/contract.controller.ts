@@ -1,10 +1,12 @@
 import { Body, Controller, Get, Post, Request, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ContractService } from './contract.service';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { v4 as uuid } from 'uuid';
+import { diskStorage } from 'multer';
+
 import { CreateContractDto, UpdateContractDto } from 'src/dto/contract.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import { ContractService } from './contract.service';
+import removeSpaces from 'src/utils/removeSpaces';
 
 @Controller('contract')
 export class ContractController {
@@ -18,7 +20,7 @@ export class ContractController {
       storage: diskStorage({
         destination: './uploads',
         filename: function(req, file, cb) {
-          file.originalname = uuid() + file.originalname;
+          file.originalname = uuid().concat('.').concat(removeSpaces(file.originalname));
           cb(null, file.originalname)
         }
       })

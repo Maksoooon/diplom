@@ -27,7 +27,7 @@ export class CreatePersonContractData {
 
 export class CreateContractDto {
     tariffId?: string;
-    data: string;
+    data: string; // JSON string
     isFinished?: boolean;
     type: string;
     files?: Express.Multer.File[];

@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Contract } from './contract.entity';
 import { JwtService } from '@nestjs/jwt';
+import { join } from 'path';
+import * as bcrypt from 'bcryptjs';
+
+import { Contract } from './contract.entity';
 import { ContractData } from './contract.data.entity';
 import { Register } from 'src/auth/auth.entity';
 
@@ -12,9 +15,13 @@ export class ContractService {
     const payload = this.jwtService.decode(token.slice(7));
     const contractBody = new Contract();
     contractBody.userId = payload.id;
-    if(contract.type === 'person') {
+    if (contract.type === 'person') {
       const user = await Register.getUserById(payload.id);
       contractBody.fullName = user.fullName;
+    }
+    if (contract.type === 'law') {
+      const data = JSON.parse(contract.data);
+      contractBody.fullName = data.orgName;
     }
     contractBody.tariffId = contract.tariffId || null;
 
@@ -27,14 +34,16 @@ export class ContractService {
     contractBody.type = contract.type;
     contractBody.passportScan = [];
     files.forEach(file => {
-      contractBody.passportScan.push(file.filename);
+      console.log('FILES>>>', Object.keys(file), file)
+      const fileNameHash = bcrypt.hashSync(file.filename);
+      contractBody.passportScan.push(fileNameHash);
     })
-
     await Contract.save(contractBody);
     return contractBody;
   }
 
   async updateContract(contract) {
+    console.log(contract)
     const currentContract = await Contract.findOne({where: {
       contactId: contract.contractId
     }, relations: ["data"]});
@@ -50,7 +59,6 @@ export class ContractService {
 
     currentDataContract.data = newData;
     const newContractData = await ContractData.save(currentDataContract);
-    console.log(newContractData)
 
     currentContract.data = newContractData;
     currentContract.isFinished = contract.isFinished;
@@ -62,10 +70,17 @@ export class ContractService {
 
   async getContract() {
     const contracts = await Contract.find({
-      relations: ["data", "userId", "tariffId"], // TODO возвращается один и тот же юзер (который делает запрос)
+      relations: ["data", "userId", "tariffId"],
     })
 
     contracts.forEach((contract) => {
+      const [firstImage, secondImage] = contract.passportScan; // до изменения
+
+      contract.passportScan[0] = join(`${process.env.BASE_URL}`,  'uploads',`${firstImage}`); // после
+      contract.passportScan[1] = join(`${process.env.BASE_URL}`,  'uploads',`${secondImage}`)
+
+      console.log('before', firstImage)
+      console.log('after',contract.passportScan[0]);
       delete contract.userId.login;
       delete contract.userId.password;
       delete contract.userId.isAdmin;
