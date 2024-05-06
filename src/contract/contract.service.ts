@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { join } from 'path';
 import * as bcrypt from 'bcryptjs';
+import * as PDFDocument from 'pdfkit';
+import * as blobStream from 'blob-stream';
+import * as fs from 'fs';
 
 import { Contract } from './contract.entity';
 import { ContractData } from './contract.data.entity';
@@ -87,5 +90,26 @@ export class ContractService {
     });
 
     return contracts;
+  }
+
+  async createPDF(uuid) {
+    const contract = await Contract.findOne({
+      where: {
+        contactId: uuid
+      }
+    })
+
+    // if(!contract) {
+    //   return {
+    //     message: 'Контракт не существует'
+    //   }
+    // }
+
+    const pdfDoc = new PDFDocument();
+    const fileName = '2.pdf';
+    pdfDoc.pipe(fs.createWriteStream(`./pdf/${fileName}`));
+    pdfDoc.text('My sample pdf doc');
+    pdfDoc.end();
+    return fileName;
   }
 }

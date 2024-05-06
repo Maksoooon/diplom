@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Request, Res, StreamableFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { v4 as uuid } from 'uuid';
 import { diskStorage } from 'multer';
@@ -7,6 +7,9 @@ import { CreateContractDto, UpdateContractDto } from 'src/dto/contract.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { ContractService } from './contract.service';
 import removeSpaces from 'src/utils/removeSpaces';
+import { Response } from 'express';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 
 @Controller('contract')
 export class ContractController {
@@ -39,4 +42,11 @@ export class ContractController {
   getContract() {
     return this.contractService.getContract();
   }
+
+  @Get('create-pdf')
+  async createPDF(@Query('uuid') uuid: string, @Res() res: Response) {
+    const fileName = await this.contractService.createPDF(uuid);
+    const file = await createReadStream(join(process.cwd(), `./pdf/${fileName}`));
+    file.pipe(res);
+  }  
 }
