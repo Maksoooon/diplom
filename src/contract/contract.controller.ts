@@ -46,7 +46,12 @@ export class ContractController {
   @Get('create-pdf')
   async createPDF(@Query('uuid') uuid: string, @Res() res: Response) {
     const fileName = await this.contractService.createPDF(uuid);
-    const file = await createReadStream(join(process.cwd(), `./pdf/${fileName}`));
-    file.pipe(res);
+
+    if(fileName.message) {
+      res.send(fileName);
+    } else {
+      const file = await createReadStream(join(process.cwd(), `./pdf/${fileName.fileName}`));
+      file.pipe(res);
+    }
   }  
 }
