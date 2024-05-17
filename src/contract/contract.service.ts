@@ -38,7 +38,6 @@ export class ContractService {
     contractBody.type = contract.type;
     contractBody.passportScan = [];
     files.forEach((file) => {
-      console.log("FILES>>>", Object.keys(file), file);
       const fileNameHash = bcrypt.hashSync(file.filename);
       contractBody.passportScan.push(fileNameHash);
     });
@@ -47,7 +46,6 @@ export class ContractService {
   }
 
   async updateContract(contract) {
-    console.log(contract);
     const currentContract = await Contract.findOne({
       where: {
         contactId: contract.contractId,
@@ -85,19 +83,8 @@ export class ContractService {
     contracts.forEach((contract) => {
       const [firstImage, secondImage] = contract.passportScan; // до изменения
 
-      contract.passportScan[0] = join(
-        `${process.env.BASE_URL}`,
-        "uploads",
-        `${firstImage}`
-      ); // после
-      contract.passportScan[1] = join(
-        `${process.env.BASE_URL}`,
-        "uploads",
-        `${secondImage}`
-      );
-
-      console.log("before", firstImage);
-      console.log("after", contract.passportScan[0]);
+      contract.passportScan[0] = `${process.env.BASE_URL}/${firstImage}`,
+      contract.passportScan[1] = `${process.env.BASE_URL}/${secondImage}`,
       delete contract.userId.login;
       delete contract.userId.password;
       delete contract.userId.isAdmin;

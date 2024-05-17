@@ -9,18 +9,12 @@ import { FeedModule } from './feed/feed.module';
 import { TariffModule } from './tariff/tariff.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true
     }), 
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
-
-    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
