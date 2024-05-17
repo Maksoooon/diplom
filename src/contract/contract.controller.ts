@@ -23,7 +23,7 @@ export class ContractController {
       storage: diskStorage({
         destination: './uploads',
         filename: function(req, file, cb) {
-          file.originalname = uuid().concat('.').concat(removeSpaces(file.originalname));
+          file.originalname = uuid();
           cb(null, file.originalname)
         }
       })

@@ -38,8 +38,7 @@ export class ContractService {
     contractBody.type = contract.type;
     contractBody.passportScan = [];
     files.forEach((file) => {
-      const fileNameHash = bcrypt.hashSync(file.filename);
-      contractBody.passportScan.push(fileNameHash);
+      contractBody.passportScan.push(file.filename);
     });
     await Contract.save(contractBody);
     return contractBody;
