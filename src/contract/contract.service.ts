@@ -122,7 +122,7 @@ export class ContractService {
       };
     } else {
       const pdfDoc = new PDFDocument();
-      const fileName = "2.pdf";
+      const fileName = `${uuid}.pdf`;
       pdfDoc.pipe(fs.createWriteStream(`./pdf/${fileName}`));
 
       const text = ApiConfig.contract_text(contract);

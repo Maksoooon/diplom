@@ -10,6 +10,6 @@ async function bootstrap() {
   app.use(express.static(join(__dirname, '..', '..', 'uploads')))
   app.enableCors();
   await app.listen(port);
-  console.log(`server started at ${port} port!`, join(__dirname, '..', '..', 'uploads'))
+  console.log(`server started at ${port} port!`)
 }
 bootstrap();
