@@ -40,7 +40,7 @@ export class FeedService {
       },
     })
 
-    return feeds.filter((feed) => feed.userId.type === type);
+    return feeds
   }
 
   public async updateStatus(token) {
